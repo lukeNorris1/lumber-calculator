@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import AddWoodCut from "./components/AddWoodCut";
 
 type rect = {
@@ -20,16 +20,14 @@ type woodCut = {
 function App() {
   console.log("re-render");
   const [woodCutList, setWoodCutList] = useState<woodCut[]>([]);
-
-
   const [error, setError] = useState("");
 
-  const [rectParam, setRectParam] = useState<rect>({
-    start: { x: 0, y: 0 },
-    radius: 100,
-    width: 1000,
-    height: 1000,
-  });
+
+  useEffect(() => {
+    console.log(`wood cut list lenght: ${woodCutList.length}`)
+
+  }, [woodCutList])
+  
 
   function addWoodCut(width: number, height: number, thickness: number) {
     setWoodCutList([...woodCutList, { width: width, height: height, thickness: thickness }]);
@@ -105,12 +103,15 @@ function App() {
         );
       })}
       <svg
-        width={rectParam.width + 100}
-        height={rectParam.height}
+        width={1000 + 100}
+        height={(woodCutList.length * 100) + 20}
         className="bg-red-100"
       >
-        <rect width="1000" height="100" x="50" y="5" fill="yellow" />
-        <rect width="1000" height="100" x="50" y="105" fill="blue" />
+        {woodCutList.map((_, index) => {
+        return (
+          <rect width="1000" height={95} x="50" y={(index * 100) + 5} fill={index % 2 == 0 ? "red" : "green"} />
+        );
+      })}
       </svg>
     </div>
   );
