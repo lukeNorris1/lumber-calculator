@@ -21,6 +21,8 @@ function App() {
   console.log("re-render");
   const [woodCutList, setWoodCutList] = useState<woodCut[]>([]);
   const [error, setError] = useState("");
+  const [nominalWidth, setnNominalWidth] = useState<number>(1)
+  const [nominalHeight, setnNominalHeight] = useState<number>(1)
 
 
   useEffect(() => {
@@ -103,13 +105,13 @@ function App() {
         );
       })}
       <svg
-        width={1000 + 100}
-        height={(woodCutList.length * 100) + 20}
+        width={(1000 * nominalWidth) + 100}
+        height={((woodCutList.length * 100) * nominalHeight) + 20}
         className="bg-red-100"
       >
-        {woodCutList.map((_, index) => {
+        {woodCutList.map((cut, index) => {
         return (
-          <rect width="1000" height={95} x="50" y={(index * 100) + 5} fill={index % 2 == 0 ? "red" : "green"} />
+          <rect width={cut.width} height={95} x="50" y={(index * 100) + 5} fill={index % 2 == 0 ? "red" : "green"} />
         );
       })}
       </svg>
