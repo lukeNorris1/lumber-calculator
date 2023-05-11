@@ -111,6 +111,11 @@ function App() {
     );
   }
 
+  const rectXOffset = 20
+  const yPaddingOffset = 10
+  const yTextOffset = 30
+  const xTextOffset = 25
+
   return (
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-3xl font-bold underline">Hello world!</h1>
@@ -124,7 +129,7 @@ function App() {
         );
       })}
       <svg
-        width={1000 * nominalWidth + 100}
+        width={1000 * nominalWidth + (rectXOffset * 2)}
         height={
           woodCutList.reduce((total, current) => total + current.height, 0) *
             nominalHeight +
@@ -139,20 +144,20 @@ function App() {
               <rect
                 width={cut.width}
                 height={cut.height}
-                x="50"
-                y={totalHeight - cut.height + 10 * index + 10}
+                x={rectXOffset}
+                y={totalHeight - cut.height + yPaddingOffset * index + yPaddingOffset}
                 fill={index % 2 == 0 ? "red" : "green"}
               />
               <text
-                x={cut.width / 2}
-                y={totalHeight - cut.height + 10 * index + 30}
+                x={(cut.width / 2) + rectXOffset/2}
+                y={totalHeight - cut.height + yPaddingOffset * index + yTextOffset}
                 className=""
               >
                 {cut.width}
               </text>
               <text
-                x={55}
-                y={totalHeight - cut.height + 30 + cut.height / 2}
+                x={xTextOffset}
+                y={totalHeight - cut.height + yTextOffset + cut.height / 2}
                 className=""
               >
                 {cut.height}
