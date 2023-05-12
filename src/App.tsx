@@ -22,6 +22,7 @@ function App() {
   const [error, setError] = useState("");
   const [nominalWidth, setnNominalWidth] = useState<number>(1);
   const [nominalHeight, setnNominalHeight] = useState<number>(1);
+  const [rectMaxWidth, setRectMaxWidth] = useState<number>(0)
   let totalHeight = 0;
 
   useEffect(() => {
@@ -111,10 +112,18 @@ function App() {
     );
   }
 
+  const svgWidth = 1000
   const rectXOffset = 20
   const yPaddingOffset = 10
   const yTextOffset = 30
   const xTextOffset = 25
+  // 
+
+  function checkMaxWidth(compareNumber: number)}{
+
+    
+
+  }
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -128,8 +137,11 @@ function App() {
           </div>
         );
       })}
+      {/* RectXOffeset * 2 = 4% of total. 2% left and 2% right as padding 
+        so width of any rect inside is 100% - 4% and since it starts at 2% it has to be 96% wide at maximum
+      */}
       <svg
-        width={1000 * nominalWidth + (rectXOffset * 2)}
+        width={svgWidth + (rectXOffset * 2)}
         height={
           woodCutList.reduce((total, current) => total + current.height, 0) *
             nominalHeight +
@@ -137,6 +149,13 @@ function App() {
         }
         className="bg-red-100"
       >
+       <rect
+                width={`${96}%`}
+                height="20%"
+                x={`2%`}
+                y={10}
+                fill={"red"}
+            />
         {woodCutList.map((cut, index) => {
           totalHeight += cut.height;
           return (
