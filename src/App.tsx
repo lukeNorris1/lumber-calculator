@@ -1,14 +1,6 @@
+import React from "react";
 import { MouseEvent, useEffect, useState } from "react";
 
-type rect = {
-  start: {
-    x: number;
-    y: number;
-  };
-  radius: number;
-  width: number;
-  height: number;
-};
 
 type woodCut = {
   width: number;
@@ -22,12 +14,20 @@ function App() {
   const [error, setError] = useState("");
   const [nominalWidth, setnNominalWidth] = useState<number>(1);
   const [nominalHeight, setnNominalHeight] = useState<number>(1);
-  const [rectMaxWidth, setRectMaxWidth] = useState<number>(0)
+  const [rectMaxWidth, setRectMaxWidth] = useState<number>(1000)
   let totalHeight = 0;
 
   useEffect(() => {
     console.log(`wood cut list lenght: ${woodCutList.length}`);
+    if (woodCutList.length > 0){
+      if (woodCutList[woodCutList.length - 1].width > rectMaxWidth) setRectMaxWidth(woodCutList[woodCutList.length - 1].width)
+    }
   }, [woodCutList]);
+
+  useEffect(() => {
+    console.log(`max width: ${rectMaxWidth}`)
+  }, [rectMaxWidth])
+  
 
   function addWoodCut(width: number, height: number, thickness: number) {
     setWoodCutList([
@@ -119,10 +119,8 @@ function App() {
   const xTextOffset = 25
   // 
 
-  function checkMaxWidth(compareNumber: number)}{
-
-    
-
+  function checkMaxWidth(compareNumber: number){
+    return null
   }
 
   return (
@@ -130,13 +128,7 @@ function App() {
       <h1 className="text-3xl font-bold underline">Hello world!</h1>
       <WoodForm />
 
-      {woodCutList.map((e, index) => {
-        return (
-          <div key={index}>
-            Width: {e.width}, Height: {e.height}, Thickness: {e.thickness}
-          </div>
-        );
-      })}
+
       {/* RectXOffeset * 2 = 4% of total. 2% left and 2% right as padding 
         so width of any rect inside is 100% - 4% and since it starts at 2% it has to be 96% wide at maximum
       */}
@@ -145,30 +137,30 @@ function App() {
         height={
           woodCutList.reduce((total, current) => total + current.height, 0) *
             nominalHeight +
-          60
+          (yPaddingOffset * (woodCutList.length + 1))
         }
         className="bg-red-100"
       >
-       <rect
+       {/* <rect
                 width={`${96}%`}
                 height="20%"
                 x={`2%`}
                 y={10}
                 fill={"red"}
-            />
+            /> */}
         {woodCutList.map((cut, index) => {
           totalHeight += cut.height;
           return (
-            <>
+            <React.Fragment key={index}>
               <rect
-                width={cut.width}
+                width={`${(cut.width / rectMaxWidth) * 100 - 4}%`}
                 height={cut.height}
                 x={rectXOffset}
                 y={totalHeight - cut.height + yPaddingOffset * index + yPaddingOffset}
                 fill={index % 2 == 0 ? "red" : "green"}
               />
               <text
-                x={(cut.width / 2) + rectXOffset/2}
+                x={`${((cut.width / rectMaxWidth) * 100 - 4) / 2}%`}
                 y={totalHeight - cut.height + yPaddingOffset * index + yTextOffset}
                 className=""
               >
@@ -181,7 +173,7 @@ function App() {
               >
                 {cut.height}
               </text>
-            </>
+            </React.Fragment>
           );
         })}
       </svg>
