@@ -124,7 +124,7 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center ">
       <h1 className="text-3xl font-bold underline">Hello world!</h1>
       <WoodForm />
 
@@ -132,51 +132,53 @@ function App() {
       {/* RectXOffeset * 2 = 4% of total. 2% left and 2% right as padding 
         so width of any rect inside is 100% - 4% and since it starts at 2% it has to be 96% wide at maximum
       */}
-      <svg
-        width={svgWidth + (rectXOffset * 2)}
-        height={
-          woodCutList.reduce((total, current) => total + current.height, 0) *
-            nominalHeight +
-          (yPaddingOffset * (woodCutList.length + 1))
-        }
-        className="bg-red-100"
-      >
-       {/* <rect
-                width={`${96}%`}
-                height="20%"
-                x={`2%`}
-                y={10}
-                fill={"red"}
-            /> */}
-        {woodCutList.map((cut, index) => {
-          totalHeight += cut.height;
-          return (
-            <React.Fragment key={index}>
-              <rect
-                width={`${(cut.width / rectMaxWidth) * 100 - 4}%`}
-                height={cut.height}
-                x={rectXOffset}
-                y={totalHeight - cut.height + yPaddingOffset * index + yPaddingOffset}
-                fill={index % 2 == 0 ? "red" : "green"}
-              />
-              <text
-                x={`${((cut.width / rectMaxWidth) * 100 - 4) / 2}%`}
-                y={totalHeight - cut.height + yPaddingOffset * index + yTextOffset}
-                className=""
-              >
-                {cut.width}
-              </text>
-              <text
-                x={xTextOffset}
-                y={totalHeight - cut.height + yTextOffset + cut.height / 2}
-                className=""
-              >
-                {cut.height}
-              </text>
-            </React.Fragment>
-          );
-        })}
-      </svg>
+      <div className="h-screen overflow-y-auto">
+        <svg
+          width={svgWidth + (rectXOffset * 2)}
+          height={
+            woodCutList.reduce((total, current) => total + current.height, 0) *
+              nominalHeight +
+            (yPaddingOffset * (woodCutList.length + 1))
+          }
+          className="bg-red-100"
+        >
+        {/* <rect
+                  width={`${96}%`}
+                  height="20%"
+                  x={`2%`}
+                  y={10}
+                  fill={"red"}
+              /> */}
+          {woodCutList.map((cut, index) => {
+            totalHeight += cut.height;
+            return (
+              <React.Fragment key={index}>
+                <rect
+                  width={`${(cut.width / rectMaxWidth) * 100 - 4}%`}
+                  height={cut.height}
+                  x={rectXOffset}
+                  y={totalHeight - cut.height + yPaddingOffset * index + yPaddingOffset}
+                  fill={index % 2 == 0 ? "red" : "green"}
+                />
+                <text
+                  x={`${((cut.width / rectMaxWidth) * 100 - 4) / 2}%`}
+                  y={totalHeight - cut.height + yPaddingOffset * index + yTextOffset}
+                  className=""
+                >
+                  {cut.width}
+                </text>
+                <text
+                  x={xTextOffset}
+                  y={totalHeight - cut.height + yTextOffset + cut.height / 2}
+                  className=""
+                >
+                  {cut.height}
+                </text>
+              </React.Fragment>
+            );
+          })}
+        </svg>
+      </div>
     </div>
   );
 }
